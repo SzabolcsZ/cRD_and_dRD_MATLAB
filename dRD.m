@@ -165,7 +165,7 @@ output.UVWanalyticG_1st = UVWanalyticG_1st;
 output.UVWanalyticB_2nd = UVWanalyticB_2nd;
 output.UVWanalyticG_2nd = UVWanalyticG_2nd;
 
-save(['simulationResult_',datestr(now(),'yyyymmdd_HHMMSS'),'.mat'],'output','-v7.3');
+save(['dRDsimulationResult_',datestr(now(),'yyyymmdd_HHMMSS'),'.mat'],'output','-v7.3');
 
 
 
