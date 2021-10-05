@@ -131,9 +131,9 @@ for n=0:N-1
             W(n*M+m+1) = initialJuvenile(n*M+m+1)*WicG + (1-initialJuvenile(n*M+m+1))*WicB;
         else
             %hss initial conditions...
-            U(n*M+m+1) = Uhss+0.01*(2*rand()-1);
-            V(n*M+m+1) = Vhss+0.01*(2*rand()-1);
-            W(n*M+m+1) = Whss+0.01*(2*rand()-1);
+            U(n*M+m+1) = UVWanalytic_hss(1)+0.01*(2*rand()-1);
+            V(n*M+m+1) = UVWanalytic_hss(2)+0.01*(2*rand()-1);
+            W(n*M+m+1) = UVWanalytic_hss(3)+0.01*(2*rand()-1);
         end
     end
 end
