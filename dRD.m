@@ -5,6 +5,12 @@
 % LANE, University of Geneva
 % 2021
 
+%%
+
+icJuvenile = 1; 
+%1: use juvenile initial condition, 0: use small perturbations around hss
+
+
 %% Reaction diffusion parameters
 
 %(optimized for LL66 for n.n. stats):
@@ -66,7 +72,6 @@ N = 35; %number of rows (~Y coord)
 
 % for juvenile-like initial conditions...
 load('initialjuvenile_35x110.mat')
-icJuvenile = 1; %1: use juvenile initial condition, 0: use small perturbations around hss
 
 % L matrix (edge length matrix)
 disp('Build matrices...')
@@ -165,7 +170,7 @@ output.UVWanalyticG_1st = UVWanalyticG_1st;
 output.UVWanalyticB_2nd = UVWanalyticB_2nd;
 output.UVWanalyticG_2nd = UVWanalyticG_2nd;
 
-save(['dRDsimulationResult_',datestr(now(),'yyyymmdd_HHMMSS'),'.mat'],'output','-v7.3');
+save(['dRD_simulationResult.mat'],'output','-v7.3');
 
 
 

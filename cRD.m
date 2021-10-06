@@ -7,17 +7,16 @@
 
 %%
 
+% this code uses the GPU
 gpuDevice(1)
 
 % import 3D mesh of lattice of bell-shaped scales (generated with lizardskinLattice.m)
 tic
 mesh = getMeshStruct3D([pwd,'/lizardSkin.vtk']);
-%mesh = getMeshStruct3D([pwd,'/lizardSkin100.msh']);
-%mesh = getMeshStruct3D([pwd,'/lizardSkin400.msh']);
 toc
 
 save_all = 0; % 1: saves intermediate states, 0: overwrites...
-filename = 'lizRD';
+filename = 'cRD_lizRD';
 rng('shuffle');
 
 
@@ -181,7 +180,7 @@ tic
 ii = 0;
 for i = 1:nt
     
-    % Render and write
+    % Render and write every 50 timesteps
     if mod(i, 50) == 1
         ii = ii+1;
         if save_all
@@ -198,8 +197,8 @@ for i = 1:nt
             'SCALARS','w1',gather(w1pde),...
             'SCALARS','dw1',gather(dw1pde));        
         disp('Finished vtk')
-        save('res.mat','u1pde','v1pde','w1pde','tarray','dwsum');
-        save('selectedVhistory.mat','tarray','dwsum','usHist','vsHist','wsHist','selectedVxyz');
+        %save('res.mat','u1pde','v1pde','w1pde','tarray','dwsum');
+        save('cRD_selectedUVWhistory.mat','tarray','dwsum','usHist','vsHist','wsHist','selectedVxyz');
     end
     
     % Set reaction vectors

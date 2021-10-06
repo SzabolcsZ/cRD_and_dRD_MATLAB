@@ -187,7 +187,8 @@ switch upper(dataType)
         
         if ~binaryflag
             spec = ['%0.', precision, 'f '];
-            fprintf(fid, spec, output);
+            %fprintf(fid, spec, output);
+            fprintf(fid, [spec spec spec ' \n'], output);
         else
             fwrite(fid, output, 'float', 'b');
         end

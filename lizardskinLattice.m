@@ -7,12 +7,17 @@
 % 2021
 %%
 
-% Mesh for lizard skin
+% grid point numbers of mesh in X and Y directions:
+Nx = 100;
+Ny = 100;
+
+%%
+% Mesh of lizard skin
 
 % scale lattice data
 eps = 1;
-Ni = 120;
-Nj = 120;
+Ni = 150; % (these should be enough for reasonable sized meshes)
+Nj = 150;
 S = 20/sqrt(3);
 sigma = 6/6*S;
 deltaZ = S/6; %height between bumps
@@ -22,10 +27,6 @@ Xc = 3/2*S*J;
 Yc = sqrt(3)*S*(I+1/2*mod(J-1,2) );
 
 % mesh data
-% grid point numbers of mesh in X and Y directions:
-Nx = 100;
-Ny = 100;
-%%%
 [Xgrid, Ygrid] = meshgrid(1:eps:Nx,1:eps:Ny);
 ZgaussLin = gaussianLattice(Xgrid(:),Ygrid(:),Xc,Yc,sigma);
 Zgauss = reshape(ZgaussLin,size(Xgrid,1),[]);
@@ -68,7 +69,7 @@ vtkwrite('lizardSkin.vtk','UNSTRUCTURED_GRID',...
 
 % command to remesh using gmsh (https://gmsh.info/)        
 command = 'gmsh lizardSkin.vtk -3 -o lizardSkin.msh';
-system(command)
+system(command);
 
 
 %%

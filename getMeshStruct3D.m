@@ -45,54 +45,40 @@ end
 
 
 
-
 if strcmp(file(end-3:end),'.vtk')
-    % code to read .vtk data
+    % code to read .vtk data (e.g. produced by vtkwrite.m) for
+    % UNSTRUCTURED_GRID format
     disp('  Assuming .vtk is UNSTRUCTURED_GRID and made of tetrahedron CELLS')
     fileID = fopen(file);
-    
-    % find beginning of point data;
-    text = fgetl(fileID);
-    linenum=1;
-    while ~strcmp(text(1:min(7,length(text))),'POINTS ')
-        linenum=linenum+1;
-        text = fgetl(fileID);
-    end
-    temp =  textscan(text,'%s');
-    %
-    % read point data;
-    points = [];
-    while ~strcmp(text(1:min(6,length(text))),'CELLS ')
-        linenum=linenum+1;
-        text = fgetl(fileID);
-        if ~isempty(text)
-            temp = textscan(text,'%f');
-            temp = temp{1};
-            points = [points;temp(:)];
-        end
-    end
-    V = reshape(points,3,[])';
+    fulltext = fileread(file);
+    posPOINTS = strfind(fulltext,'POINTS');
+    posCELLS = strfind(fulltext,'CELLS');
+    posCELL_TYPES = strfind(fulltext,'CELL_TYPES');
+    % extract points
+    dpos = strfind(fulltext(posPOINTS+(0:100)),newline);
+    text = fulltext((posPOINTS+dpos):(posCELLS-1));
+    V = reshape( sscanf(text,'%f'),3,[] )';
     N_v = size(V,1);
-    %
-    % read tetrahedron data (assuming the elements are line by line);
-    T = [];
+    % extract triangles & tetrahedra
+    % (assuming triangles are listed before tetrahedra)
+    dpos3 = strfind(fulltext(posCELLS:(posCELL_TYPES-1)),[newline '3']);
+    dpos4 = strfind(fulltext(posCELLS:(posCELL_TYPES-1)),[newline '4']);
     bF = [];
-    while ~(strcmp(text(1:min(5,length(text))),'CELL_') ||...
-            strcmp(text(1:min(5,length(text))),'POINT')) && ischar(text)
-        linenum=linenum+1;
-        text = fgetl(fileID);
-        numbers = str2num(text);
-        if ~isempty(numbers)
-            if numbers(1)==4
-                T = [T; numbers(2:5)+1]; %in .vtk the indices start at 0
-            elseif numbers(1)==3
-                bK = [bK; numbers(2:4)+1]; %in .vtk the indices start at 0
-            end
-        end
+    T = [];
+    if ~isempty(dpos3)
+        text = fulltext( posCELLS+(dpos3(1):(dpos4(1)-2)) );
+        temp = reshape( sscanf(text,'%f'),4,[] )';
+        bF = temp(:,2:end)+1;
     end
-    N_t = size(T,1);
+    if ~isempty(dpos4)
+        text = fulltext( (posCELLS+dpos4(1)):(posCELL_TYPES-1) );
+        temp = reshape( sscanf(text,'%f'),5,[] )';
+        T = temp(:,2:end)+1;
+    end
     N_bf = size(bF,1);
+    N_t = size(T,1);
     fclose(fileID);
+    
 end
 
 
