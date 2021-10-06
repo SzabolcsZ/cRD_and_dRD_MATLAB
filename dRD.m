@@ -8,7 +8,7 @@
 %%
 
 icJuvenile = 1; 
-%1: use juvenile initial condition, 0: use small perturbations around hss
+%1: use juvenile initial condition, 0: use small perturbations around unstable homogeneous steady state
 
 
 %% Reaction diffusion parameters
