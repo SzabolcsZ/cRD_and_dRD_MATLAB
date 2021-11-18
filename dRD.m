@@ -13,7 +13,7 @@ icJuvenile = 1;
 
 %% Reaction diffusion parameters
 
-%(optimized for LL66 for n.n. stats):
+%(optimized for LL66 for nearest neighbour stats):
 %-------------------------
 params.c1=-0.04;
 params.c2=-0.056;
@@ -54,7 +54,7 @@ UVWanalyticG_1st = h1st_sol(4:6);
 
 %  sub-clusters
 for nG = 0:6
-    ffunc = @(x)(objfunc2ndLevel(x,params,UVWanalyticB_1st,UVWanalyticG_1st,nG));
+    ffunc = @(x) (objfunc2ndLevel(x,params,UVWanalyticB_1st,UVWanalyticG_1st,nG));
     [h2nd_sol,~] = fminsearch(ffunc,UVWanalyticB_1st);
     UVWanalyticB_2nd(nG+1,:) = h2nd_sol;
     [h2nd_sol,~] = fminsearch(ffunc,UVWanalyticG_1st);
@@ -170,6 +170,7 @@ output.UVWanalyticG_1st = UVWanalyticG_1st;
 output.UVWanalyticB_2nd = UVWanalyticB_2nd;
 output.UVWanalyticG_2nd = UVWanalyticG_2nd;
 
+output.L = L;
 save(['dRD_simulationResult.mat'],'output','-v7.3');
 
 
